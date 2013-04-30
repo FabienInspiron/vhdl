@@ -7,7 +7,7 @@ architecture archi_decoder of decoder is
 	
 begin
 	sel_mux_rs1 <=  '1' WHEN (code_op="") ElSE
-					'0' WHEN (code_op='1') ;
+					'0' WHEN (code_op="0111") OR (code_op="1000");
 						
 	-- Code pour l'alu
 	--
@@ -37,7 +37,10 @@ begin
 	sel_mem_mux <= '0' WHEN (code_op = "0101") OR (code_op="0011") ELSE '1';
 	
 	-- cas du JUMP
-	sel_adr_mux <= '0' WHEN (code_op = "0110") ELSE '1';
+	sel_adr_mux <= '0' WHEN (code_op = "0110") ELSE
+						'0' WHEN (code_op = "0111") AND (flagEQ = '1') ELSE
+						'0' WHEN (code_op = "1000") AnD (flagGT = '1')
+						ELSE '1';
 	
 	-- Donne le droit d'ecrire dans le register file lors du wb
 	en_reg_file <= '1'  WHEN (code_op = "0000") OR -- add
@@ -57,12 +60,12 @@ begin
 	sel_alu_mux <= 
 					-- On choisi l'alu lors d'un 
 					-- add, sub, not,mul.
-					"00" WHEN (code_op="0000") OR
-							 (code_op="0001") OR -- addition
-							 (code_op="1100") OR -- addition
-							 (code_op="0010") ELSE -- addition
-				   "001" WHEN (code_op="0001") ELSE -- soustraction
-				   "011" WHEN (code_op="0010") ELSE -- mult
-				   "010" WHEN (code_op="1100") ; -- not
+					"00" WHEN (code_op="0000") OR --add
+							 (code_op="0001") OR -- sub
+							 (code_op="1100") OR -- NOT
+							 (code_op="0010") ELSE -- mul
+				   
+				   "10" WHEN (code_op="1001") OR (code_op ="1101" )ELSE -- MOVI valeur immediate
+				   "01" WHEN (code_op="0100") OR (code_op="1011") ; -- MOV ou OUT pour ne prendre que RS2
 	
 end architecture archi_decoder;

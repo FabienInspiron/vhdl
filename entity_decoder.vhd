@@ -28,7 +28,7 @@ ENTITY decoder IS
 		code_alu       : OUT unsigned (2 downto 0); --ok
 
 		-- ecriture data memory
-		r_w            : OUT bit; 
+		r_w            : OUT bit; --ok
 
 		-- autorisation ecriture register file lors du wb
 		en_reg_file    : OUT bit; --ok
@@ -42,7 +42,7 @@ ENTITY decoder IS
 		
 		sel_mux_rs1    : OUT bit; --ok
 		
-		-- selection numero rs1 a l’entree du reg_file
+		-- selection numero rs1 a
 		sel_adr_mux    : OUT bit; --ok
 		
 		-- selection adresse prochaine instr.
