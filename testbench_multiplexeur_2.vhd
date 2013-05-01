@@ -11,7 +11,7 @@ component multiplexeur_2
 		 sort : OUT unsigned(15 downto 0));
 end component multiplexeur_2;
 
-SIGNAL Ssel : unsigned   ( 1  downto 0);
+SIGNAL Ssel :  bit;
 SIGNAL Sent1 : unsigned  ( 15 downto 0);
 SIGNAL Sent2 : unsigned  ( 15 downto 0);
 SIGNAL Ssort : unsigned  ( 15 downto 0);

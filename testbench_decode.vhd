@@ -14,6 +14,7 @@ architecture testbench_decode of testbench is
 			 port_entre           : in  unsigned(15 downto 0);
 			 data_mem_wb          : in  unsigned(15 downto 0);
 			 clk                  : in  bit;
+			 
 			 sel_adr_mux_de_if    : out bit;
 			 incr_decr_de_if      : out bit;
 			 rd_de_ex             : out unsigned(3 downto 0);
@@ -40,6 +41,7 @@ architecture testbench_decode of testbench is
 	signal Sport_entre           : unsigned(15 downto 0);
 	signal Sdata_mem_wb          : unsigned(15 downto 0);
 	signal Sclk                  : bit;
+	
 	signal Ssel_adr_mux_de_if    : bit;
 	signal Sincr_decr_de_if      : bit;
 	signal Srd_de_ex             : unsigned(3 downto 0);
@@ -57,7 +59,7 @@ architecture testbench_decode of testbench is
 begin
 	
 	deco : decode
-		port map(rd_if_de             => Srd_if_de,
+		port map(rd_if_de            => Srd_if_de,
 			     code_op              => Scode_op,
 			     rs1_if_de            => Srs1_if_de,
 			     rs2_if_de            => Srs2_if_de,
@@ -82,15 +84,41 @@ begin
 			     val_rs1_de_ex        => Sval_rs1_de_ex,
 			     val_rs2_de_ex        => Sval_rs2_de_ex);
 			     
+	-- Generation d'une horloge
+	horloge : PROCESS                   -- signal périodique
+	BEGIN                               -- exécution séquentielle dans le corps
+		boucle : FOR i IN 0 TO 10 LOOP
+			Sclk <= '1';
+			WAIT FOR 50 ns; 
+			
+			Sclk <= '0';
+			WAIT FOR 50 ns; 
+		END LOOP boucle;
+		wait;
+	END PROCESS;
+	
 	PROCESS
 	BEGIN
 	
-		Scode_op <= "0000";
-			
-		WAIT FOR 50 ns;
+		Scode_op <= "0000";  -- addition
+		Srs1_if_de <= "0101";
+		Srs2_if_de <= "1010";
+		Sdata_mem_wb <= "1111111100000000";
+		Sen_reg_file_mem_wb <= '1';
+		Srd_mem_wb <= "0101";
+		
+		WAIT FOR 51 ns;
 		
 		-- Vrerification du WB
 		ASSERT Ssel_adr_mux_de_if = '1' REPORT "Erreur" SEVERITY error;
+		ASSERT Scode_alu_de_ex = "000" REPORT "Erreur1" SEVERITY error;
+		ASSERT Ssel_mem_mux_de_ex = '0' REPORT "Erreur2" SEVERITY error;
+		ASSERT Sval_rs1_de_ex = "000000000000000000" REPORT "Erreur3" SEVERITY error;
+		ASSERT Sval_rs2_de_ex = "000000000000000000" REPORT "Erreur4" SEVERITY error;
+		
+		-- Verifier que la valeur à été ecrite dans le banc de registre
+		WAIT FOR 50 ns;
+		ASSERT Sval_rs1_de_ex = "1111111100000000" REPORT "Erreur5" SEVERITY error;
 		
 		WAIT;
 	END PROCESS;		

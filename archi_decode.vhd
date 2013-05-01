@@ -171,9 +171,6 @@ begin
 			     ent2 => convert2,
 			     sort => convert3);
 			     
-
-	process (clk)
-	begin
 		from_mux_to_register_file <= convert3(3 downto 0);
 		rd_de_ex <= register_to_execute(12 downto 9);
 		code_alu_de_ex <= register_to_execute(8 downto 6);
@@ -187,5 +184,4 @@ begin
 		convert2 <= ("000000000000" & rs1_if_de);
 		
 		signaux_to_execute <= rd_if_de & Scode_alu & Sr_w & Sen_reg_file & Ssel_alu_mux & Ssel_mem_mux & Sdata_out_valid;
-	end process;
 end architecture archi_decode;

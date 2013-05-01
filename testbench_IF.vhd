@@ -4,12 +4,19 @@ use IEEE.numeric_bit.all;
 architecture testbench_IF of testbench is
 	
 	component instruction_fetch
-		port(input       : in  unsigned(7 downto 0);
-			 load        : in  bit;
-			 clock       : in  bit;
-			 stall       : in  bit;
-			 reset       : in  bit;
-			 instruction : out unsigned(15 downto 0));
+		port(input             : in  unsigned(7 downto 0);
+			 load              : in  bit;
+			 clock             : in  bit;
+			 stall             : in  bit;
+			 reset             : in  bit;
+			 sel_adr_mux_de_if : in  bit;
+			 incr_decr_de_if   : in  bit;
+			 rd_if_de          : out unsigned(3 downto 0);
+			 code_op_if_de     : out unsigned(3 downto 0);
+			 rs1_if_de         : out unsigned(3 downto 0);
+			 rs2_if_de         : out unsigned(3 downto 0);
+			 data_im_if_de     : out unsigned(7 downto 0);
+			 instruction       : out unsigned(15 downto 0));
 	end component instruction_fetch;
 
 	signal Sinput : unsigned(7 downto 0);      
@@ -18,6 +25,14 @@ architecture testbench_IF of testbench is
 	signal	Sstall : bit;      
 	signal	Sreset  : bit;     
 	signal	Sinstruction : unsigned(15 downto 0);
+	
+	signal Ssel_adr_mux_de_if :  bit;
+	signal Sincr_decr_de_if   :  bit;
+	signal Srd_if_de          : unsigned(3 downto 0);
+	signal Scode_op_if_de     : unsigned(3 downto 0);
+	signal Srs1_if_de         : unsigned(3 downto 0);
+	signal Srs2_if_de         : unsigned(3 downto 0);
+	signal Sdata_im_if_de     : unsigned(7 downto 0);
 	
 begin
 	horloge : PROCESS                   -- signal périodique
@@ -33,12 +48,19 @@ begin
 	END PROCESS;
 	
 	dut : instruction_fetch
-		port map(input       => Sinput,
-			     load        => Sload,
-			     clock       => Sclock,
-			     stall       => Sstall,
-			     reset       => Sreset,
-			     instruction => Sinstruction);
+		port map(input             => Sinput,
+			     load              => Sload,
+			     clock             => Sclock,
+			     stall             => Sstall,
+			     reset             => Sreset,
+			     sel_adr_mux_de_if => Ssel_adr_mux_de_if,
+			     incr_decr_de_if   => Sincr_decr_de_if,
+			     rd_if_de          => Srd_if_de,
+			     code_op_if_de     => Scode_op_if_de,
+			     rs1_if_de         => Srs1_if_de,
+			     rs2_if_de         => Srs2_if_de,
+			     data_im_if_de     => Sdata_im_if_de,
+			     instruction       => Sinstruction);
 			     
 	PROCESS
 	BEGIN
@@ -47,7 +69,7 @@ begin
 		Sreset <= '1';
 		Sstall <= '0';
 		
-		WAIT FOR 50 ns;
+		WAIT FOR 100 ns;
 		ASSERT Sinstruction = "0000000000001010" REPORT "Erreur1" SEVERITY error;
 	
 		WAIT FOR 100 ns;

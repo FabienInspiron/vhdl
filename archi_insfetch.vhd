@@ -34,6 +34,7 @@ architecture archi_inst_fetch of instruction_fetch is
 	-- Création des cables de liaison
 	SIGNAL sig  : unsigned(7 downto 0);
 	SIGNAL sig2 : unsigned(15 downto 0);
+	SIGNAL sig3 : unsigned(15 downto 0);
 
 begin
 
@@ -53,7 +54,7 @@ begin
 	instmem : instruction_memory
 		port map(address     => sig,    -- entré depuis PC
 			     instruction => sig2);  -- sortie vers instruction register
-
+	
 	-- Registre 16 bits
 	reg : registre_n
 		generic map(N => 16)
@@ -61,5 +62,13 @@ begin
 			     reset   => reset,
 			     horloge => clock,
 			     output  => instruction);
+			 
 
+	-- Affectation des valeurs de sortie    
+	code_op_if_de <= sig2 (3 downto 0);
+	rd_if_de <= sig2 (7 downto 4);
+	rs1_if_de <= sig2 (11 downto 8);
+	rs2_if_de <= sig2 (15 downto 12);
+	data_im_if_de <= sig2 (15 downto 8);
+	
 END archi_inst_fetch;

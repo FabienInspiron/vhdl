@@ -6,9 +6,6 @@ architecture archi_decoder of decoder is
 	signal s1 : bit;
 
 begin
-	sel_mux_rs1 <= '0' WHEN (code_op="0111") OR (code_op="1000")
-						ELSE '1';
-
 	-- Code pour l'alu
 	--
 	code_alu <= "000" WHEN (code_op="0000") ELSE -- addition
@@ -25,8 +22,8 @@ begin
 	s1 <= '0';		
 	data_out_valid <= '1' WHEN (code_op = "1011") ELSE '0';
 	-- Attention ------ remettre a 0 ensuite
-	data_out_valid <= s1;
-
+	--data_out_valid <= s1;  several sources for unresolved signal
+	
 	data_in_ack <= '1' WHEN (data_in_valid = '1') AND (code_op="1101") ELSE '0';
 
 	-- On decrement PC pour entendre une donnée en entrée
