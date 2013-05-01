@@ -10,15 +10,13 @@ architecture archi_memory of memory_access is
 			 output  : out unsigned(15 downto 0));
 	end component memoire_data;
 	
-	component multiplexeur
-		port(sel  : IN  unsigned(1 downto 0);
+	component multiplexeur_2
+		port(sel  : IN  bit;
 			 ent1 : IN  unsigned(15 downto 0);
 			 ent2 : IN  unsigned(15 downto 0);
-			 ent3 : IN  unsigned(15 downto 0);
-			 ent4 : IN  unsigned(15 downto 0);
 			 sort : OUT unsigned(15 downto 0));
-	end component multiplexeur;
-	
+	end component multiplexeur_2;
+		
 	component registre_n
 		generic(N : integer := 16);
 		port(input   : IN  unsigned(N - 1 downto 0);
@@ -31,7 +29,6 @@ architecture archi_memory of memory_access is
 	signal from_mux_to_reg : unsigned(15 downto 0);
 	signal tmp_read : unsigned (4 downto 0);
 	signal tmp_out : unsigned (4 downto 0);
-	signal tmp : unsigned (1 downto 0);
 	
 begin
 
@@ -54,14 +51,10 @@ begin
 	o_rd <= tmp_out(4 downto 1);
 	o_wr_regFile <= tmp_out(0);
 	
-	tmp <= "0"&i_selMuxMem;
-	
-	mux : multiplexeur
-		port map(sel  => tmp,
+	mux : multiplexeur_2
+		port map(sel  => i_selMuxMem,
 			     ent1 => mem_data_to_mux,
 			     ent2 => data,
-			     ent3 => data,
-			     ent4 => data,
 			     sort => from_mux_to_reg);
 			     
 	reg16 : registre_n

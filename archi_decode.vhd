@@ -156,8 +156,6 @@ begin
 			     sel_mux_rs1    => from_decoder_to_mux_rs1,
 			     sel_adr_mux    => sel_adr_mux_de_if,
 			     data_out_valid => Sdata_out_valid);
-
-	signaux_to_execute <= rd_if_de & Scode_alu & Sr_w & Sen_reg_file & Ssel_alu_mux & Ssel_mem_mux & Sdata_out_valid;
 	
 	registre_10 : registre_n
 		generic map(N => 13)
@@ -166,23 +164,28 @@ begin
 			     horloge => clk,
 			     output  => register_to_execute);
 			     
-	rd_de_ex <= register_to_execute(12 downto 9);
-	code_alu_de_ex <= register_to_execute(8 downto 6);
-	r_w_de_ex <= register_to_execute(5);
-	en_reg_file_de_ex <= register_to_execute(4);
-	sel_alu_mux_de_ex <= register_to_execute(3 downto 2);
-	sel_mem_mux_de_ex <= register_to_execute(1);
-	data_out_valid_de_ex <= register_to_execute(0);
 
-	convert1 <= ("000000000000" & rd_if_de);
-	convert2 <= ("000000000000" & rs1_if_de);
-	
 	mux2 : multiplexeur_2
 		port map(sel  => from_decoder_to_mux_rs1,
 			     ent1 => convert1,
 			     ent2 => convert2,
 			     sort => convert3);
 			     
-	from_mux_to_register_file <= convert3(3 downto 0);
 
+	process (clk)
+	begin
+		from_mux_to_register_file <= convert3(3 downto 0);
+		rd_de_ex <= register_to_execute(12 downto 9);
+		code_alu_de_ex <= register_to_execute(8 downto 6);
+		r_w_de_ex <= register_to_execute(5);
+		en_reg_file_de_ex <= register_to_execute(4);
+		sel_alu_mux_de_ex <= register_to_execute(3 downto 2);
+		sel_mem_mux_de_ex <= register_to_execute(1);
+		data_out_valid_de_ex <= register_to_execute(0);
+	
+		convert1 <= ("000000000000" & rd_if_de);
+		convert2 <= ("000000000000" & rs1_if_de);
+		
+		signaux_to_execute <= rd_if_de & Scode_alu & Sr_w & Sen_reg_file & Ssel_alu_mux & Ssel_mem_mux & Sdata_out_valid;
+	end process;
 end architecture archi_decode;
