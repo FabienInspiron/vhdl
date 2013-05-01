@@ -3,8 +3,6 @@ use IEEE.numeric_bit.all;
 
 architecture archi_extension_signe of extension_signe is
 	
-	signal sortie : unsigned (15 downto 0);
-	
 begin
 
 process (input)

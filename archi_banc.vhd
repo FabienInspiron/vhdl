@@ -18,11 +18,11 @@ begin
 		Adresse_lecture1_int := to_integer(Adresse_lecture1);
 		Adresse_lecture2_int := to_integer(Adresse_lecture2);
 		
-		if clk='1' THEN
+		if clk'event AND clk='1' THEN
 			if r_w = '1' then
 				mem_data(Adresse_ecriture_int) := data;
 			end if;
-		ELSIF clk ='0' then
+		ELSIF clk'event AND clk ='0' then
 			output1 <= mem_data(Adresse_lecture1_int);
 			output2 <= mem_data(Adresse_lecture2_int);
 		end if;

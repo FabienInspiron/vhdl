@@ -3,7 +3,7 @@ use IEEE.numeric_bit.all;
 
 architecture archi_decode of decode is
 	component decoder
-		port(code_op        : IN  unsigned(3 downto 0);
+		port(code_op       : IN  unsigned(3 downto 0);
 			 flagEQ         : IN  bit;
 			 flagGT         : IN  bit;
 			 data_in_valid  : in  bit;

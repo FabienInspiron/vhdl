@@ -4,26 +4,26 @@ use IEEE.numeric_bit.all;
 architecture archi_decoder of decoder is
 	
 	signal s1 : bit;
-	variable ADD : unsigned (3 downto 0) := "0000";
-	variable SUB : unsigned (3 downto 0) := "0001";
-	variable vNOT : unsigned (3 downto 0) := "1100";
-	variable MUL : unsigned (3 downto 0) := "0010";
-	variable JMP : unsigned (3 downto 0) := "0110";
-	variable BEQ : unsigned (3 downto 0) := "0111";
-	variable BGT : unsigned (3 downto 0) := "1000";
-	variable LD : unsigned (3 downto 0) := "0101";
-	variable MOVI : unsigned (3 downto 0) := "1001";
-	variable ST : unsigned (3 downto 0) := "0011";
-	variable NOP : unsigned (3 downto 0) := "1010";
-	variable MOV : unsigned (3 downto 0) := "0100";
-	variable vIN : unsigned (3 downto 0) := "1101";
-	variable vOUT : unsigned (3 downto 0) := "1011";
+	variable ADD  : unsigned(3 downto 0) := "0000";
+	variable SUB  : unsigned(3 downto 0) := "0001";
+	variable vNOT : unsigned(3 downto 0) := "1100";
+	variable MUL  : unsigned(3 downto 0) := "0010";
+	variable JMP  : unsigned(3 downto 0) := "0110";
+	variable BEQ  : unsigned(3 downto 0) := "0111";
+	variable BGT  : unsigned(3 downto 0) := "1000";
+	variable LD   : unsigned(3 downto 0) := "0101";
+	variable MOVI : unsigned(3 downto 0) := "1001";
+	variable ST   : unsigned(3 downto 0) := "0011";
+	variable NOP  : unsigned(3 downto 0) := "1010";
+	variable MOV  : unsigned(3 downto 0) := "0100";
+	variable vIN  : unsigned(3 downto 0) := "1101";
+	variable vOUT : unsigned(3 downto 0) := "1011";
 	
 begin
 
 	
-	sel_mux_rs1 <=  '1' WHEN (code_op="") ElSE
-					'0' WHEN (code_op=BEQ) OR (code_op=BGT);
+	sel_mux_rs1 <=  '0' WHEN (code_op=BEQ) OR (code_op=BGT)
+					ELSE '1';
 						
 	-- Code pour l'alu
 	--
@@ -40,7 +40,7 @@ begin
 	
 	s1 <= '0';		
 	data_out_valid <= '1' WHEN (code_op = vOUT) ELSE '0';
-	-- Attention ------ remettre a 0 ensuite
+	-- Attention ------ remettre a 0 ensuite, au prochain tour
 	data_out_valid <= s1;
 
 	data_in_ack <= '1' WHEN (data_in_valid = '1') AND (code_op=vIN) ELSE '0';
