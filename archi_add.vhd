@@ -1,6 +1,7 @@
 library IEEE;
 use IEEE.numeric_bit.all;
 
+ -- Architecture ADDs
 ARCHITECTURE archi_add OF adder IS
 	-- signaux locaux = fils
 	SIGNAL i1, i2, i3 : bit;
