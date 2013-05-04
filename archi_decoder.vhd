@@ -62,7 +62,7 @@ begin
 							 (code_op="1100") OR -- NOT
 							 (code_op="0010") ELSE -- mul
 
-				   "10" WHEN (code_op="1001") OR (code_op ="1101" )ELSE -- MOVI valeur immediate
+				   "10" WHEN (code_op="1001") OR (code_op ="1101" ) OR (code_op="1010") ELSE -- MOVI valeur immediate
 				   "01" WHEN (code_op="0100") OR (code_op="1011") ; -- MOV ou OUT pour ne prendre que RS2
 
 end architecture archi_decoder;

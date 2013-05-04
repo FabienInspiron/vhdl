@@ -70,7 +70,7 @@ begin
 	oDataOutValid 	<= sortie_reg7(0);
 
 	inst_alu : alu
-		port map(code_op => codeOp,     
+		port map(code_op => codeOp,
 			     op1     => operande1,
 			     op2     => operande2,
 			     output  => alu_to_mux);

@@ -44,7 +44,7 @@ begin
 	-- Program counter
 	pc : program_counter
 		port map(clk    => clock,
-			     input  => sig,         -- Entré depuis le PC
+			     input  => input,         -- Entré depuis l'exterieur
 			     load   => load,
 			     stall  => stall,
 			     reset  => reset,
