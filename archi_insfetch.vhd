@@ -62,13 +62,5 @@ begin
 			     reset   => reset,
 			     horloge => clock,
 			     output  => instruction);
-			 
-
-	-- Affectation des valeurs de sortie    
-	code_op_if_de <= sig2 (3 downto 0);
-	rd_if_de <= sig2 (7 downto 4);
-	rs1_if_de <= sig2 (11 downto 8);
-	rs2_if_de <= sig2 (15 downto 12);
-	data_im_if_de <= sig2 (15 downto 8);
 	
 END archi_inst_fetch;

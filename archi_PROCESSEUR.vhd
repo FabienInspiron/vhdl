@@ -78,8 +78,24 @@ architecture processeur_archi of processeur is
 	signal Srd_de_ex : unsigned (3 downto 0);
 	signal Sr_w_de_ex : bit;
 	signal Sen_reg_file_de_ex : bit;
+	signal infetch_to_decode : unsigned (15 downto 0);
 	
 		
+	signal code_op_if_de :unsigned (2 downto 0);
+	signal rd_if_de : unsigned (2 downto 0);
+	signal rs1_if_de : unsigned (2 downto 0);
+	signal rs2_if_de : unsigned  (4 downto 0);
+	signal data_im_if_de : unsigned (6 downto 0);
+	
+	signal op1 : unsigned (15 downto 0);
+	signal op2 : unsigned (15 downto 0);
+	signal Sen_reg_file_mem_wb : bit;
+	signal Srd_mem_wb : unsigned (3 downto 0);
+	signal Sdata_mem_wb : unsigned (15 downto 0);
+	signal Sdata_ex_mem : unsigned (15 downto 0);
+	signal Sadr_ex_mem : unsigned (15 downto 0);
+	signal Ssel_mem_mux_de_ex : bit;
+	
 begin
 	
 	instru : instruction_fetch
@@ -88,53 +104,71 @@ begin
 			     clock       => clock,
 			     stall       => stall,
 			     reset       => reset,
-			     instruction => instruction);
+			     instruction => infetch_to_decode);
+			     
+	-- Affectation des valeurs de sortie    
+	code_op_if_de <= infetch_to_decode (3 downto 0);
+	rd_if_de <= infetch_to_decode (7 downto 4);
+	rs1_if_de <= infetch_to_decode (11 downto 8);
+	rs2_if_de <= infetch_to_decode (15 downto 12);
+	data_im_if_de <= infetch_to_decode (15 downto 8);
 			     
 	dec : decode
 		port map(rd_if_de             => rd_if_de,
-			     code_op              => code_op,
+			     code_op              => code_op_if_de,
 			     rs1_if_de            => rs1_if_de,
 			     rs2_if_de            => rs2_if_de,
 			     data_im_if_de        => data_im_if_de,
-			     en_reg_file_mem_wb   => en_reg_file_mem_wb,
-			     rd_mem_wb            => rd_mem_wb,
+			     
+			     en_reg_file_mem_wb   => Sen_reg_file_mem_wb,
+			     rd_mem_wb            => Srd_mem_wb,
 			     data_in_valid        => data_in_valid,
-			     port_entre           => port_entre,
-			     data_mem_wb          => data_mem_wb,
-			     clk                  => clk,
+			     port_entre           => Port_entree,
+			     
+			     data_mem_wb          => Sdata_mem_wb,
+			     
+			     clk                  => clock,
+			     
 			     sel_adr_mux_de_if    => Ssel_adr_mux_de_if,
 			     incr_decr_de_if      => incr_decr_de_if,
 			     rd_de_ex             => Srd_de_ex,
 			     r_w_de_ex            => Sr_w_de_ex,
 			     en_reg_file_de_ex    => Sen_reg_file_de_ex,
-			     sel_mem_mux_de_ex    => sel_mem_mux_de_ex,
+			     
+			     sel_mem_mux_de_ex    => Ssel_mem_mux_de_ex,
 			     sel_alu_mux_de_ex    => sel_alu_mux_de_ex,
 			     code_alu_de_ex       => code_alu_de_ex,
 			     data_out_valid_de_ex => data_out_valid_de_ex,
 			     data_in_ack          => data_in_ack,
 			     data_im_de_ex        => data_im_de_ex,
-			     val_rs1_de_ex        => val_rs1_de_ex,
-			     val_rs2_de_ex        => val_rs2_de_ex);
+			     
+			     val_rs1_de_ex        => op1,
+			     val_rs2_de_ex        => op2);
 	
 	exec : execute
 		port map(iRD           => Srd_de_ex,
 			     iWRegFile     => Sr_w_de_ex,
-			     iSeIMuxMem    => iSeIMuxMem,
+			     
+			     iSeIMuxMem    => Ssel_mem_mux_de_ex,
 			     iWrMem        => iWrMem,
 			     selMuxALU     => selMuxALU,
 			     codeOp        => codeOp,
-			     operande1     => operande1,
-			     operande2     => operande2,
+			     
+			     operande1     => op1,
+			     operande2     => op2,
+			     
 			     ImmediateData => ImmediateData,
 			     iDataOutValid => iDataOutValid,
-			     clk           => clk,
+			     
+			     clk           => clock,
+			     
 			     oRD           => oRD,
 			     owrRegFile    => owrRegFile,
 			     oselMuxMem    => oselMuxMem,
 			     owrMem        => owrMem,
-			     memAdress     => memAdress,
-			     memData       => memData,
-			     DataOut       => DataOut,
+			     memAdress     => Sadr_ex_mem,
+			     memData       => Sdata_ex_mem,
+			     DataOut       => Port_sortie,
 			     oDataOutValid => oDataOutValid);
 			     
 	mem : memory_access
@@ -142,11 +176,13 @@ begin
 			     i_wrRegFile   => i_wrRegFile,
 			     i_selMuxMem   => i_selMuxMem,
 			     i_wr_mem      => i_wr_mem,
-			     adresse       => adresse,
-			     data          => data,
-			     clk           => clk,
-			     o_rd          => o_rd,
-			     o_wr_regFile  => o_wr_regFile,
-			     dataWriteBack => dataWriteBack);
+			     adresse       => Sadr_ex_mem,
+			     data          => Sdata_ex_mem,
+			     
+			     clk           => clock,
+			     
+			     o_rd          => Srd_mem_wb,
+			     o_wr_regFile  => Sen_reg_file_mem_wb,
+			     dataWriteBack => Sdata_mem_wb);
 			     
 end architecture processeur_archi;
