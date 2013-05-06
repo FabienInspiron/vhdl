@@ -56,6 +56,9 @@ begin
 	PROCESS
 		BEGIN
 			Sadresse <= "00000000";
+			Sload  <= '1';
+			Sstall <= '0';
+			SRESET <= '1';
 			
 		WAIT;
 	END PROCESS;

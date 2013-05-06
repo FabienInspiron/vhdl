@@ -24,12 +24,11 @@ begin
 				-- pas modifiée
 			if stall='0' then
 				output <= save;
+				save <= save + 1;
 			end if;
 			end if;
-		ELSE
-			save <= save + 1;
 		END IF;
-	
+			
 	END PROCESS;
 	
 end archi_pc;
