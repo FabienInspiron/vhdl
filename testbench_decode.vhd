@@ -100,7 +100,8 @@ begin
 	PROCESS
 	BEGIN
 	
-		Scode_op <= "0000";  -- addition
+		-- test de l'addition
+		Scode_op <= "0000";
 		Srs1_if_de <= "0101";
 		Srs2_if_de <= "1010";
 		Sdata_mem_wb <= "1111111100000000";
@@ -109,7 +110,7 @@ begin
 		
 		WAIT FOR 51 ns;
 		
-		-- Vrerification du WB
+		-- Vérification du WB
 		ASSERT Ssel_adr_mux_de_if = '1' REPORT "Erreur" SEVERITY error;
 		ASSERT Scode_alu_de_ex = "000" REPORT "Erreur1" SEVERITY error;
 		ASSERT Ssel_mem_mux_de_ex = '0' REPORT "Erreur2" SEVERITY error;
@@ -117,8 +118,17 @@ begin
 		ASSERT Sval_rs2_de_ex = "000000000000000000" REPORT "Erreur4" SEVERITY error;
 		
 		-- Verifier que la valeur à été ecrite dans le banc de registre
-		WAIT FOR 50 ns;
+		WAIT FOR 51 ns;
 		ASSERT Sval_rs1_de_ex = "1111111100000000" REPORT "Erreur5" SEVERITY error;
+		
+		-- Verification de la valeur immédiate
+		Scode_op <= "1001";
+		Sdata_im_if_de <= "01010101";
+		
+		WAIT FOR 100 ns;
+		ASSERT Sdata_im_de_ex = "0000000001010101" REPORT "Erreur6" SEVERITY error;
+		
+		
 		
 		WAIT;
 	END PROCESS;		

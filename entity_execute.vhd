@@ -21,6 +21,8 @@ entity execute is
 		owrMem		: out bit;
 		memAdress 	: out unsigned (7 downto 0);
 		memData		: out unsigned (15 downto 0);
+		
+		-- Sortie à l'exterieure du processeur
 		DataOut		: out unsigned (15 downto 0);
 		oDataOutValid : out bit
 	);

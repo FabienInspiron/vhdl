@@ -60,6 +60,7 @@ begin
 	PROCESS
 	BEGIN
 	
+		-- Test de l'addition
 		Scode_op <= "0000";
 		SflagEQ <='0';
 		SflagGT <= '0';
@@ -67,7 +68,8 @@ begin
 		WAIT FOR 50 ns;
 		
 		-- Vrerification du WB
-		ASSERT Sen_reg_file = '1' REPORT "Erreur" SEVERITY error;
+		ASSERT Sen_reg_file = '1' REPORT "Erreur0" SEVERITY error;
+		ASSERT Ssel_mux_rs1 = '1' REPORT "Erreur1" SEVERITY error;
 		
 	WAIT;
 END PROCESS;

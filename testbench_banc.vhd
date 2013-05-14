@@ -58,21 +58,31 @@ begin
 	    Sdata <= "0101010101010101";
 	    Sr_w <= '1';
 	    
+	    -- Ecriture de la donnée dans le registre 1
+	    -- Les valeurs luent sont alors à 0.
+	    -- Attention, on ne peut pas lire et ecrire en même temps.
 	    Wait FOR 100 ns;
 	    ASSERT Soutput1 = "0000000000000000" REPORT "Erreur1" SEVERITY error;
 	    ASSERT Soutput2 = "0000000000000000" REPORT "Erreur2" SEVERITY error;
 	   
+	    -- Passage en mode lecture
 	   	Sr_w <= '0';
+	   	
+	   	-- Lecture dans le registre 1, la valeur qui vient d'être ecrite
 	   	SAdresse_lecture1 <= "0001";
 	    Wait FOR 51 ns;
+	    
+	    -- La valeur de sortie de output 1 est egale à celle ecrite
 	    ASSERT Soutput1 = "0101010101010101" REPORT "Erreur3" SEVERITY error;
 	    ASSERT Soutput2 = "0000000000000000" REPORT "Erreur4" SEVERITY error;
 	   	
+	   	-- Ecriture dans le registre 3
 	   	Sr_w <= '1';
 	   	SAdresse_ecriture <= "0011";
 	   	Sdata <= "1111111100000000";
 	    Wait FOR 50 ns;
 		
+		-- Lecture dans le registre 3
 	   	SAdresse_lecture2 <= "0011";
 	    Wait FOR 50 ns;
 	    ASSERT Soutput2 = "1111111100000000" REPORT "Erreur5" SEVERITY error;

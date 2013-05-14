@@ -5,10 +5,13 @@ entity decode is
 	port(
 		rd_if_de             : in  unsigned(3 downto 0);
 		code_op              : in  unsigned(3 downto 0);
+		
 		rs1_if_de            : in  unsigned(3 downto 0);
 		rs2_if_de            : in  unsigned(3 downto 0);
+		
 		data_im_if_de        : in  unsigned(7 downto 0);
 		en_reg_file_mem_wb   : in  bit;
+		
 		rd_mem_wb            : in  unsigned(3 downto 0);
 		data_in_valid        : in  bit;
 		port_entre           : in  unsigned(15 downto 0);

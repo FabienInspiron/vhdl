@@ -85,16 +85,38 @@ begin
 	
 	PROCESS
 		BEGIN
+		
+			
 			Soperande1      <= "0000000000000010";
 	        Soperande2      <= "0000000000000011";
-	        ScodeOp         <= "001";
-	        SselMuxALU      <= "01";
-	        SiDataOutValid 	<= '1';
+	        ScodeOp         <= "000";
+	        
+	        SselMuxALU      <= "00";
+	        SiDataOutValid 	<= '0';
+	        
 	        SImmediateData  <= "1111111111111111";
 	        SiRD           	<= "0001";
 	        SiWRegFile    	<= '1';
 	        SiSeIMuxMem    	<= '1';
 	        SiWrMem        	<= '1';
+	        
+			
+			-- Recuperation de la valeur de l'operande 2
+			SselMuxALU      <= "01";
+			WAIT FOR 101 ns;
+	        ASSERT SmemData = "0000000000000011" REPORT "Erreur0" SEVERITY error;
+	        
+	        -- Recuperation de la valeur sortant dans de l'alu
+	        SselMuxALU      <= "00";
+	        WAIT FOR 100 ns;
+	        ASSERT SmemData = "0000000000000101" REPORT "Erreur1" SEVERITY error;
+	        
+	        -- Recuperation de la valeur de Data Out
+	        ASSERT SDataOut = "0000000000000101" REPORT "Erreur2" SEVERITY error;
+	        ASSERT SoDataOutValid = '0' REPORT "Erreur3" SEVERITY error;
+	        
+	        -- Verification de l'adresse de sortie
+	        ASSERT SmemAdress = "0000000000000010" REPORT "Erreur4" SEVERITY error;
 		WAIT;
 	END PROCESS;
 	

@@ -10,6 +10,7 @@ architecture testbench_mem_acc of testbench is
 			 adresse       : in  unsigned(7 downto 0);
 			 data          : in  unsigned(15 downto 0);
 			 clk           : in  bit;
+			 
 			 o_rd          : out unsigned(3 downto 0);
 			 o_wr_regFile  : out bit;
 			 dataWriteBack : out unsigned(15 downto 0));
@@ -53,11 +54,25 @@ begin
 			     o_wr_regFile  => So_wr_regFile,
 			     dataWriteBack => SdataWriteBack);
 	
-	Si_rd <=  "0001";      
-	Si_wrRegFile <= '1';
-	Si_selMuxMem <= '1';
-	Si_wr_mem  <= '1';
-	Sadresse <= "00000001";   
-	Sdata   <=  "0101010101010101";
+	PROCESS
+	BEGIN
+		
+		Si_rd <=  "0001";
+		Si_wrRegFile <= '1';
+		Si_selMuxMem <= '1';
+		Si_wr_mem  <= '1';
+		Sadresse <= "00000001";   
+		Sdata   <=  "0101010101010101";
+		
+		-- Verification des signaux de sortie
+		-- Les sorties sont a la bonne valeur au prochain top d'horloge
+		WAIT FOR 101 ns;
+		ASSERT So_rd = "0001" REPORT "Erreur0" SEVERITY error;
+		ASSERT So_wr_regFile = '1' REPORT "Erreur1" SEVERITY error;
+		ASSERT SdataWriteBack = "0101010101010101" REPORT "Erreur2" SEVERITY error;
+		
+	WAIT;
+	END PROCESS;
+	
 	
 end architecture testbench_mem_acc;

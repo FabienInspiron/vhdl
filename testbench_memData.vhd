@@ -30,23 +30,31 @@ begin
 			Swrite <= '0';
 			
 		WAIT FOR 50 ns;
+		-- Verifier que les valeurs sont bien initialisée à 0
+		-- Ecriture de la valeur à l'adresse 1
 		ASSERT Soutput = "0000000000000000" REPORT "Erreur1" SEVERITY error;
 
-			Swrite <= '1';
+		-- Mode de lecture
+		Swrite <= '1';
 			
 		WAIT FOR 50 ns;
+		-- Verifier que la valeur lue est celle positionnée
 		ASSERT Soutput = "0000000000000111" REPORT "Erreur2" SEVERITY error;
 
+		-- Changement de la valeur de la donnée et ecriture à l'adresse 0
 			Sdata <= "0000000000111111";
-			Sadresse <= "00000011";
+			Sadresse <= "00000000";
 			Swrite <= '0';
 			
 		WAIT FOR 50 ns;
+		-- La nouvelle valeur n'est pas encore positionnée
 		ASSERT Soutput = "0000000000000111" REPORT "Erreur2" SEVERITY error;
-
-			Swrite <= '1';
+			
+		-- Lecture de la valeur	
+		Swrite <= '1';
 			
 		WAIT FOR 50 ns;
+		-- La valeur positionnée est la bonne
 		ASSERT Soutput = "0000000000111111" REPORT "Erreur2" SEVERITY error;
 		
 		WAIT;

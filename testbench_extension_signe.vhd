@@ -19,18 +19,22 @@ begin
 			     
 	PROCESS
 		BEGIN
+			-- Extension du 0
 			Sinput <= "00000000";
 			WAIT FOR 100 ns;
 			ASSERT Soutput = "0000000000000000" REPORT "Erreur1" SEVERITY error;
 			
+			-- Extension du 1
 			Sinput <= "10000000";
 			WAIT FOR 100 ns;
 			ASSERT Soutput = "1111111110000000" REPORT "Erreur2" SEVERITY error;
 			
+			-- Extension du 1
 			Sinput <= "11111111";
 			WAIT FOR 100 ns;
 			ASSERT Soutput = "1111111111111111" REPORT "Erreur3" SEVERITY error;
 		
+			-- Extension du 0
 			Sinput <= "01111111";
 			WAIT FOR 100 ns;
 			ASSERT Soutput = "0000000001111111" REPORT "Erreur4" SEVERITY error;

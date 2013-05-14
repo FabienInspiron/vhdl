@@ -43,11 +43,11 @@ begin
 	
 	horloge : PROCESS                   -- signal périodique
 	BEGIN                               -- exécution séquentielle dans le corps
-		boucle : FOR i IN 0 TO 10 LOOP
-			Sclock <= '1';
+		boucle : FOR i IN 0 TO 30 LOOP
+			Sclock <= '0';
 			WAIT FOR 50 ns; 
 			
-			Sclock <= '0';
+			Sclock <= '1';
 			WAIT FOR 50 ns; 
 		END LOOP boucle;
 		wait;

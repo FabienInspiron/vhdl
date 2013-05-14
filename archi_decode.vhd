@@ -11,7 +11,9 @@ architecture archi_decode of decode is
 			 incr_decr      : out bit;
 			 sel_mux_data   : out bit;
 			 code_alu       : OUT unsigned(2 downto 0);
+			 
 			 r_w            : OUT bit;
+			 
 			 en_reg_file    : OUT bit;
 			 sel_alu_mux    : OUT unsigned(1 downto 0);
 			 sel_mem_mux    : OUT bit;
@@ -62,6 +64,7 @@ architecture archi_decode of decode is
 			 Adresse_lecture2 : in  unsigned(3 downto 0);
 			 data             : in  unsigned(15 downto 0);
 			 r_w              : in  bit;
+			 
 			 output1          : out unsigned(15 downto 0);
 			 output2          : out unsigned(15 downto 0));
 	end component banc;
@@ -97,10 +100,15 @@ begin
 
 	registre_file : banc
 		port map(clk              => clk,
+			
+				 -- On ne peut ecrire que les données provenant du WB
 			     Adresse_ecriture => rd_mem_wb,
 			     Adresse_lecture1 => from_mux_to_register_file,
 			     Adresse_lecture2 => rs2_if_de,
+			     
+			     -- Données du WB
 			     data             => data_mem_wb,
+			     
 			     r_w              => en_reg_file_mem_wb,
 			     output1          => registre_file_to_comp,
 			     output2          => from_registre_file_to_registre);

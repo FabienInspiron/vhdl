@@ -17,12 +17,12 @@ begin
 	sel_mux_data <= '1' WHEN (code_op="1101") ELSE '0'; -- in			
 
 	sel_mux_rs1 <= '0' WHEN (code_op = "0111") OR 	     -- BEQ
-							(code_op = "1000") ELSE	'1'; -- BGT
+							(code_op = "1000")  ELSE	'1'; -- BGT
 
 	s1 <= '0';		
 	data_out_valid <= '1' WHEN (code_op = "1011") ELSE '0';
 	-- Attention ------ remettre a 0 ensuite
-	--data_out_valid <= s1;  several sources for unresolved signal
+	--data_out_valid <= '1';  several sources for unresolved signal
 	
 	data_in_ack <= '1' WHEN (data_in_valid = '1') AND (code_op="1101") ELSE '0';
 
