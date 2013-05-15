@@ -104,16 +104,16 @@ architecture processeur_archi of processeur is
 	signal Sdata_im_de_ex : unsigned(15 downto 0);
 	signal Scode_alu_de_ex : unsigned(2 downto 0);
 	
-	-- A completer
+	-- Signal de stall 
 	signal Sincr_decr_de_if : bit;
 	
 begin
 	
 	instru : instruction_fetch
 		port map(input       => adresse,
-			     load        => load,
+			     load        => Ssel_adr_mux_de_if,
 			     clock       => clock,
-			     stall       => stall,
+			     stall       => Sincr_decr_de_if,
 			     reset       => reset,
 			     instruction => infetch_to_decode);
 			     

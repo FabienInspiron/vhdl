@@ -22,12 +22,8 @@ begin
 	s1 <= '0';		
 	data_out_valid <= '1' WHEN (code_op = "1011") ELSE '0';
 	-- Attention ------ remettre a 0 ensuite
-	--data_out_valid <= '1';  several sources for unresolved signal
 	
 	data_in_ack <= '1' WHEN (data_in_valid = '1') AND (code_op="1101") ELSE '0';
-
-	-- On decrement PC pour entendre une donnée en entrée
-	incr_decr <= '0' WHEN (data_in_valid = '0') AND (code_op="1101") ELSE '1';
 
 	-- Si on decide de lire les données provenant de la mémoire
 	-- Se fait uniquement lors d'un LD ou STORE
@@ -65,4 +61,8 @@ begin
 				   "10" WHEN (code_op="1001") OR (code_op ="1101" ) OR (code_op="1010") ELSE -- MOVI valeur immediate
 				   "01" WHEN (code_op="0100") OR (code_op="1011") ; -- MOV ou OUT pour ne prendre que RS2
 
+	-- Prevoir le cas du IN
+	-- Il faut faire un stall quand 
+	incr_decr <= '0' WHEN (code_op="1101") AND data_in_valid = '0' ELSE '1';
+	
 end architecture archi_decoder;

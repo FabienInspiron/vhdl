@@ -9,8 +9,6 @@ architecture testbench_processeur of testbench is
 			 RESET          : in  bit;
 			 clock          : in  bit;
 			 adresse        : in  unsigned(7 downto 0);
-			 load           : in  bit;
-			 stall          : in  bit;
 			 Port_sortie    : OUT unsigned(15 downto 0);
 			 data_out_valid : out bit;
 			 data_in_ack    : out bit);
@@ -34,16 +32,13 @@ begin
 			     RESET          => SRESET,
 			     clock          => Sclock,
 			     adresse        => Sadresse,
-			     load           => Sload,
-			     stall          => Sstall,
-			     
 			     Port_sortie    => SPort_sortie,
 			     data_out_valid => Sdata_out_valid,
 			     data_in_ack    => Sdata_in_ack);
 	
 	horloge : PROCESS                   -- signal périodique
 	BEGIN                               -- exécution séquentielle dans le corps
-		boucle : FOR i IN 0 TO 30 LOOP
+		boucle : FOR i IN 0 TO 63 LOOP
 			Sclock <= '0';
 			WAIT FOR 50 ns; 
 			
@@ -59,6 +54,36 @@ begin
 			Sload  <= '1';
 			Sstall <= '0';
 			SRESET <= '1';
+			
+			-- Verification des valeurs de sortie
+			--
+			WAIT FOR 951 ns;
+			ASSERT Sdata_out_valid = '1' REPORT "Erreur1" SEVERITY error;
+			ASSERT SPort_sortie = "0000000000000010" REPORT "Erreur2" SEVERITY error;
+			
+			WAIT FOR 100 ns;
+			ASSERT Sdata_out_valid = '1' REPORT "Erreur3" SEVERITY error;
+			ASSERT SPort_sortie = "0000000000000100" REPORT "Erreur4" SEVERITY error;
+			
+			WAIT FOR 100 ns;
+			ASSERT Sdata_out_valid = '1' REPORT "Erreur5" SEVERITY error;
+			ASSERT SPort_sortie = "0000000000000001" REPORT "Erreur6" SEVERITY error;
+
+			WAIT FOR 500 ns;
+			ASSERT Sdata_out_valid = '1' REPORT "Erreur7" SEVERITY error;
+			ASSERT SPort_sortie = "0000000000000001" REPORT "Erreur8" SEVERITY error;
+
+			WAIT FOR 600 ns;
+			ASSERT Sdata_out_valid = '1' REPORT "Erreur9" SEVERITY error;
+			ASSERT SPort_sortie = "0000000000000101" REPORT "Erreur10" SEVERITY error;
+			
+			WAIT FOR 100 ns;
+			ASSERT Sdata_out_valid = '1' REPORT "Erreur9" SEVERITY error;
+			ASSERT SPort_sortie = "0000000000000100" REPORT "Erreur10" SEVERITY error;
+			
+			WAIT FOR 500 ns;
+			ASSERT Sdata_out_valid = '1' REPORT "Erreur9" SEVERITY error;
+			ASSERT SPort_sortie = "0000000000000100" REPORT "Erreur10" SEVERITY error;
 			
 		WAIT;
 	END PROCESS;

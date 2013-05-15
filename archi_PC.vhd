@@ -24,6 +24,10 @@ begin
 				-- pas modifiée
 			if stall='0' then
 				output <= save;
+				
+				-- Dans les autres cas on increment le PC
+			else
+				output <= save;
 				save <= save + 1;
 			end if;
 			end if;

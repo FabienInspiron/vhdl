@@ -67,13 +67,15 @@ begin
 		WAIT FOR 0 ns;
 		ASSERT Soutput = "00000001" REPORT "Erreur3" SEVERITY error;
 
-		-- Verification d'incrementation de la valeur
+		-- Verifier que la valeur n'est pas modifiée
 		WAIT FOR 100 ns;
-		ASSERT Soutput = "00000010" REPORT "Erreur4" SEVERITY error;
+		ASSERT Soutput = "00000001" REPORT "Erreur4" SEVERITY error;
 
+		Sstall <= '1';
+		
 		-- Verification d'incrementation de la valeur
-		WAIT FOR 100 ns;
-		ASSERT Soutput = "00000011" REPORT "Erreur5" SEVERITY error;
+		WAIT FOR 101 ns;
+		ASSERT Soutput = "00000010" REPORT "Erreur5" SEVERITY error;
 
 		wait;
 	end process;
