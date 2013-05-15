@@ -84,29 +84,29 @@ begin
 			
 			-- [6]
 			WAIT FOR 100 ns;
-			ASSERT Sdata_out_valid = '1' REPORT "Erreur9" SEVERITY error;
-			ASSERT SPort_sortie = "0000000000000100" REPORT "Erreur10" SEVERITY error;
+			ASSERT Sdata_out_valid = '1' REPORT "Erreur11" SEVERITY error;
+			ASSERT SPort_sortie = "0000000000000100" REPORT "Erreur12" SEVERITY error;
 			
 			-- [7]
 			WAIT FOR 500 ns;
-			ASSERT Sdata_out_valid = '1' REPORT "Erreur9" SEVERITY error;
-			ASSERT SPort_sortie = "0000000000000100" REPORT "Erreur10" SEVERITY error;
+			ASSERT Sdata_out_valid = '1' REPORT "Erreur13" SEVERITY error;
+			ASSERT SPort_sortie = "0000000000000100" REPORT "Erreur14" SEVERITY error;
 
 			-- [8]
 			WAIT FOR 1100 ns;
-			ASSERT Sdata_out_valid = '1' REPORT "Erreur9" SEVERITY error;
-			ASSERT SPort_sortie = "0000000000001000" REPORT "Erreur10" SEVERITY error;
+			ASSERT Sdata_out_valid = '1' REPORT "Erreur15" SEVERITY error;
+			ASSERT SPort_sortie = "0000000000001000" REPORT "Erreur16" SEVERITY error;
 			
 			-- [9]
 			WAIT FOR 500 ns;
-			ASSERT Sdata_out_valid = '1' REPORT "Erreur9" SEVERITY error;
-			ASSERT SPort_sortie = "0000000000001010" REPORT "Erreur10" SEVERITY error;
+			ASSERT Sdata_out_valid = '1' REPORT "Erreur17" SEVERITY error;
+			ASSERT SPort_sortie = "0000000000001010" REPORT "Erreur18" SEVERITY error;
 			
 			-- test du fonctionnement du JMP
 			-- Verification de la valeur de r1
 			WAIT FOR 1100 ns;
-			ASSERT Sdata_out_valid = '1' REPORT "Erreur9" SEVERITY error;
-			ASSERT SPort_sortie = "0000000000000100" REPORT "Erreur10" SEVERITY error;
+			ASSERT Sdata_out_valid = '1' REPORT "Erreur19" SEVERITY error;
+			ASSERT SPort_sortie = "0000000000000100" REPORT "Erreur20" SEVERITY error;
 			
 		WAIT;
 	END PROCESS;

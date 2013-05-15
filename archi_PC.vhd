@@ -27,8 +27,8 @@ begin
 				
 				-- Dans les autres cas on increment le PC
 			else
-				output <= save;
 				save <= save + 1;
+				output <= save;
 			end if;
 			end if;
 		END IF;
