@@ -34,7 +34,8 @@ architecture archi_inst_fetch of instruction_fetch is
 	-- Création des cables de liaison
 	SIGNAL sig  : unsigned(7 downto 0);
 	SIGNAL sig2 : unsigned(15 downto 0);
-	SIGNAL sig3 : unsigned(15 downto 0);
+	SIGNAL sig4 : unsigned(15 downto 0);
+	SIGNAL sig3 : unsigned(7 downto 0);
 
 begin
 
@@ -44,7 +45,7 @@ begin
 	-- Program counter
 	pc : program_counter
 		port map(clk    => clock,
-			     input  => input,         -- Entré depuis l'exterieur
+			     input  => sig3,         -- Entré depuis l'exterieur
 			     load   => load,
 			     stall  => stall,
 			     reset  => reset,
@@ -61,6 +62,9 @@ begin
 		port map(input   => sig2,
 			     reset   => reset,
 			     horloge => clock,
-			     output  => instruction);
+			     output  => sig4);
+			     
+	sig3 <= sig4(15 downto 8);
+	instruction <= sig4;
 	
 END archi_inst_fetch;
